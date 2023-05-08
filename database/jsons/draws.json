@@ -1,0 +1,35 @@
+[
+    {
+        "canvas": {
+            "width" : 200,
+            "height" : 200
+        },
+    
+        "figures" : [
+            {
+                "type" : "circle",
+                "posX":  40,
+                "posY": 30,
+                "radius": 20
+            }
+        ]
+    },
+
+
+
+    {
+        "canvas": {
+            "width" : 200,
+            "height" : 200
+        },
+    
+        "figures" : [
+            {
+                "type" : "square",
+                "posX":  40,
+                "posY": 30,
+                "radius": 20
+            }
+        ]
+    }
+]

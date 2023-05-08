@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DrawController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,33 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+Route::get('draw/{id}', [DrawController::class, 'show']);
+
+
+
+/* 
+CANVAS{
+    width:100
+    heigth: 100
+}
+,
+FIGURES[
+    {
+        type: SQUARE
+        position_x = 10,
+        position_y = 20,
+    },
+    {
+        type: LINE
+        position_x = 10,
+        position_y = 20,
+    }
+]
+
+
+
+
+*/
