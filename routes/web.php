@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 
 Route::get('draw/{id}', [DrawController::class, 'show']);
-
+Route::get('home', [DrawController::class, 'index']);
 
 
 /* 
