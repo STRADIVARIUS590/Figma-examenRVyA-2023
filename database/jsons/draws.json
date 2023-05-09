@@ -7,10 +7,18 @@
     
         "figures" : [
             {
+                "index:" : 1,
                 "type" : "circle",
                 "posX":  40,
                 "posY": 30,
                 "radius": 20
+            },
+            {
+                "index:" : 2,
+                "type" : "circle",
+                "posX":  140,
+                "posY": 45,
+                "radius": 40
             }
         ]
     },
@@ -25,10 +33,11 @@
     
         "figures" : [
             {
+                "index:" : 1,
                 "type" : "square",
                 "posX":  40,
                 "posY": 30,
-                "radius": 20
+                "radius": 400
             }
         ]
     }
