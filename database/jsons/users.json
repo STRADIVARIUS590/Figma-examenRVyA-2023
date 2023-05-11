@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Cristian Joel",
+    "lastname": "Verdugo",
+    "email": "joel@mail.com",
+    "password": "secret"
+  },
+  {
+    "name": "Demian Alexis",
+    "lastname": "Alvarado",
+    "email": "alexis@mail.com",
+    "password": "secret"
+  },
+  {
+    "name": "José Eduardo",
+    "lastname": "González",
+    "email": "eduardo@mail.com",
+    "password": "secret"
+  },
+  {
+    "name": "César Daniel",
+    "lastname": "Sepúlveda",
+    "email": "daniel@mail.com",
+    "password": "secret"
+  }
+]
