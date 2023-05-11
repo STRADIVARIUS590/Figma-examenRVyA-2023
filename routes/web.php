@@ -16,34 +16,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('welcome')->middleware('guest');
+
+Route::get('login', function () {
+    return redirect('/');
+})->name('login');
+
+Route::get('register', function () {
+    return redirect('/');
 });
 
-
+Route::get('/forgot-password', function () {
+    return view('admin/forgot_password/index');
+})->name('forgot.password');
 
 Route::get('draw/{id}', [DrawController::class, 'show']);
 Route::get('home', [DrawController::class, 'index']);
-
-
-/* 
-CANVAS{
-    width:100
-    heigth: 100
-}
-,
-FIGURES[
-    {
-        type: SQUARE
-        position_x = 10,
-        position_y = 20,
-    },
-    {
-        type: LINE
-        position_x = 10,
-        position_y = 20,
-    }
-]
-
-
-
-
-*/
