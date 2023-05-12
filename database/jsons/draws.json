@@ -1,24 +1,52 @@
 [
     {
         "canvas": {
-            "width" : 200,
-            "height" : 200
+            "width" : 450,
+            "height" : 450
         },
     
         "figures" : [
             {
-                "index:" : 1,
-                "type" : "circle",
+                "index" : 1,
+                "type" : "ellipse",
                 "posX":  40,
                 "posY": 30,
-                "radius": 20
+                "height": 40,
+                "width":  50
             },
             {
-                "index:" : 2,
-                "type" : "circle",
+                "index" : 2,
+                "type" : "ellipse",
                 "posX":  140,
                 "posY": 45,
-                "radius": 40
+                "height": 40,
+                "width":  60,
+                "selected" : true
+            },
+            {
+                "index" : 3,
+                "type": "line",
+                "posX": 10,
+                "posY": 100,
+                "posY2": 20,
+                "posX2" : 200
+              
+            },
+            {
+                "index" : 4,
+                "type": "line",
+                "posX": 60,
+                "posY": 200,
+                "posY2": 60,
+                "posX2" : 30
+            },
+            {
+                "index" : 5,
+                "type": "line",
+                "posX2": 71,
+                "posY2": 221,
+                "posY": 41,
+                "posX" : 21
             }
         ]
     },
@@ -33,11 +61,13 @@
     
         "figures" : [
             {
-                "index:" : 1,
-                "type" : "square",
+                "index" : 1,
+                "type" : "rect",
                 "posX":  40,
                 "posY": 30,
-                "radius": 400
+                "height": 40,
+                "width":  50,
+                "selected" : true
             }
         ]
     }

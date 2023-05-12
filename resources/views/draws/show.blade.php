@@ -14,9 +14,15 @@
 
 <body>
 
-    <button onclick="add('square')">Cuadrado</button>
-    <button onclick="add('circle')">Circulo</button>
- 
+    <input type="text" value="0" id="relx">
+    <input type="text" value="0" id="rely">
+    <input type="text" value="0" id="console">
+
+    
+    <button onclick="add('rect')">Cuadrado</button>
+    <button onclick="add('ellipse')">Circulo</button>
+    <div id="sketch-holder">
+    </div>
 </body>
 
 
@@ -24,31 +30,40 @@
 <script> 
 const image =JSON.parse(@json($image));
 
-console.log(image);
-
 Figure.figures = image.figures;
+
 function setup(){
-    createCanvas(image.canvas.width, image.canvas.height);
+    let canvas =  createCanvas(image.canvas.width, image.canvas.height);
+    
+    //  posicion de 0,0 del canvas respecto a toda la pantalla
+    let relativeX = windowWidth / 2 - image.canvas.width / 2;
+    let relativeY = windowHeight / 2 - image.canvas.height / 2
+    document.getElementById('relx').value = relativeX;
+    document.getElementById('rely').value = relativeY;
+
+    // posiciona el canvas en el centro de la pagina 
+    canvas.position(relativeX,  relativeY)
+    canvas.parent('sketch-holder');
 }
 
 function draw(){
-    background('green');
-
-   Figure.draw()
-    console.log(Figure.figures);
+    background('green')
+    Figure.draw()
     
     // noLoop();
 }
 
 function add(figure){
-    Figure.figures.push({
+    // Figure.selected().selected = false;
+     Figure.figures.push({
         type: figure,
-        posX: image.canvas.width / 2,
+        posX: Figure.figures.length,
         posY: image.canvas.height / 2,
-        radius: 50
+        height: 150,
+        width:50,
+        index: Figure.figures.length + 1,
+        selected: true
     });
-
-    console.log(Figure.figures);
 }
 
 </script>
