@@ -27,7 +27,6 @@ class UserController extends Controller
         $users = User::all();
 
         #return $user;
-        $this->createLog("consultar", null, "usuarios", "users", null);
         return view('admin.users.index', get_defined_vars());
     }
 
@@ -41,7 +40,6 @@ class UserController extends Controller
     {
         $user = User::create($request->all());
         
-        $this->createLog("registrar", $user, "usuarios", "users", $user->id);
         return redirect()->back()->with('success', 'ok');
     }
 
@@ -56,7 +54,6 @@ class UserController extends Controller
     {
         $user = User::first();
 
-        $this->createLog("consultar", $user, "usuarios", "users", $id);
         return $this->jsonResponse("Registro consultado correctamente", $user, Response::HTTP_OK, null);
     }
 
@@ -73,7 +70,6 @@ class UserController extends Controller
 
         $user->update($request->all());
 
-        $this->createLog("actualizar", $user, "usuarios", "users", $user->id);
         return redirect()->back()->with('success', 'ok');
     }
 
@@ -89,8 +85,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        $this->createLog("eliminar", $user, "usuarios", "users", $id);
         return $this->jsonResponse("Registro Eliminado correctamente", null, Response::HTTP_OK, null);
     }
-
 }
