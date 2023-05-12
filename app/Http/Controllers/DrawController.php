@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Draw;
 
-class drawController extends Controller
+class DrawController extends Controller
 {
     public $breadcrum_info = array(
         "main_title" => "Draws",
