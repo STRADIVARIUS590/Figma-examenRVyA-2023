@@ -4,15 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://kit.fontawesome.com/9b3bebdb5e.js" crossorigin="anonymous"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Proyectos</title>
 </head>
 <body>
-    HOME 
+     
+    <div id="app">
+        <projects-index
+            :user='@json(Auth::user())'
+            :projects='@json($draws)'
+        ></projects-index>
+    </div>
 
-    <form action="{{ route('logout') }}" method="POST">
-    
-        <input type="submit" value="cerrar sesion">
-        @csrf
-    </form>
+    <!--Rutas en vue-->
+    @routes
+
+    <!--VUE-->
+    @vite('resources/js/app.js')
 </body>
 </html>
