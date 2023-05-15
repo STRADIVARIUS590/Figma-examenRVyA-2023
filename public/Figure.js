@@ -20,10 +20,10 @@ class Figure {
         },
         rectBorder(figure, relx, rely){
             return {
-                top: (rely + figure.posY) - ((abs(figure.width) / 2)), 
-                left: (relx + figure.posX) -((abs(figure.height) / 2)),
-                height: abs(figure.width),
-                width: abs(figure.height),
+                top: (rely + figure.posY) - ((abs(figure.height) / 2)), 
+                left: (relx + figure.posX) -((abs(figure.width) / 2)),
+                height: abs(figure.height),
+                width: abs(figure.width),
             }
         },
     }
@@ -31,8 +31,8 @@ class Figure {
         name: 'rect',
         rectBorder(figure, relx, rely){
             return {
-                top: (rely + figure.posY), 
-                left: (relx + figure.posX),
+                top: (rely + figure.posY + (figure.height / 2))  - ((abs(figure.height) / 2)), 
+                left:(relx + figure.posX + (figure.width / 2))   - ((abs(figure.width) / 2)) ,
                 width: abs(figure.width) + 2,
                 height: abs(figure.height) + 2
             }
@@ -42,16 +42,11 @@ class Figure {
     static LINE = {
         name: 'line',
         rectBorder(figure, relx, rely){   
-
-            // let isNegY = figure.posY < figure.posY2 
-            // let isNegX = figure.posX < figure.posX2
             return {
                 top: (rely + (figure.posY < figure.posY2 ? figure.posY : figure.posY2)), 
                 left: (relx + (figure.posX < figure.posX2 ? figure.posX : figure.posX2)),
                 width: abs(figure.posX2 - figure.posX) + 5,
                 height: abs(figure.posY2 - figure.posY) + 5,
-                // isNegX: isNegX,
-                // isNegY: isNegY
             }
         }
     }
@@ -82,15 +77,15 @@ class Figure {
             //// ///////////////////////////// CIRCLE
                 case Figure.ELLIPSE.name: {
                     
-                    ellipse(figure.posX, figure.posY, figure.height, figure.width);
+                    ellipse(figure.posX, figure.posY, figure.width, figure.height);
 
                         // si la figura está seleccionada, creamos un div con su tamaño (solo cuando ese div no existe) 
 
                         if(!figure.hasNode ){
                             figure.hasNode = true 
                             let d = document.createElement('div');
-                            let relx = parseInt(document.getElementById('relx').value);
-                            let rely = parseInt(document.getElementById('rely').value);
+                            let relx = Interface.relx
+                            let rely = Interface.rely
                             let sketch_holeder = document.getElementById("sketch-holder")
                             d.setAttribute('id', figure.index);
                             d.setAttribute('type', figure.type);
@@ -125,8 +120,8 @@ class Figure {
                                 // movemos la figura
 
                                 if(e.ctrlKey){
-                                    figure.height = mouseX 
-                                    figure.width = mouseY
+                                    figure.height = mouseY
+                                    figure.width = mouseX
                                 }else{                                    
                                    
                                     figure.posX = mouseX
@@ -156,8 +151,8 @@ class Figure {
                     if(!figure.hasNode){
                         figure.hasNode = true 
                         let d = document.createElement('div');
-                        let relx = parseInt(document.getElementById('relx').value);
-                        let rely = parseInt(document.getElementById('rely').value);
+                        let relx = Interface.relx
+                        let rely = Interface.rely
                         let sketch_holeder = document.getElementById("sketch-holder")
                         d.setAttribute('id', figure.index);
                         d.setAttribute('type', figure.type);
@@ -168,7 +163,7 @@ class Figure {
                         d.style.top = `${pos.top}px`;
                         d.style.left =  `${pos.left}px`;
                         sketch_holeder.appendChild(d); 
-                         d.style.border = '1px solid blue'
+                        d.style.border = '1px solid blue'
 
 
                         d.draggable = true;
@@ -193,8 +188,8 @@ class Figure {
 
 
                             if(e.ctrlKey){
-                                figure.height = mouseX 
-                                figure.width = mouseY
+                                figure.height = mouseY
+                                figure.width = mouseX
                             }else{                                    
                                
                                 figure.posX = mouseX
@@ -226,8 +221,8 @@ class Figure {
                     if(!figure.hasNode){
                         figure.hasNode = true
                         let d = document.createElement('div');
-                        let relx = parseInt(document.getElementById('relx').value);
-                        let rely = parseInt(document.getElementById('rely').value);
+                        let relx = Interface.relx
+                        let rely = Interface.rely
                         let sketch_holeder = document.getElementById("sketch-holder")
                         d.setAttribute('id', figure.index);
                         d.setAttribute('type', figure.type);
@@ -304,23 +299,29 @@ class Figure {
     }
     Figure.figures.forEach((ele) => {
         if(ele.selected){
-            sel.indexes.push(
-                ','+ ele.index);
+            sel.indexes.push(','+ ele.index);
             sel.figures.push(ele);
         }
     })
     return sel;
     }
 
-    // // capas 
-    // tomar figuras seleccionadas, e insertarlas en orden inverso en el arreglo Figure.figures (intercambiar los indices y los divs. incluir atributos de los divs) 
+    // // capas (invierte posicion de figuras seleccionadas) 
     static reverse() {
-        // let arr = Figure.selected();
-        // arr = arr.figures.reverse();
-
-     /*    Figure.figures.forEach(e){
-            if
-        } */
-     
+    console.table(Figure.figures);
+    let arr = Figure.selected();
+    arr = arr.figures.reverse();
+    let ct = 0;
+    let ele = null;
+    Figure.figures.forEach(e =>{
+        if(e.selected){
+            ele = arr.shift();
+            // document.getElementById(e.index).setAttribute('id', ele.index)
+            // document.getElementById(ele.index).setAttribute('id', ct)
+            ele.index = ct
+            Figure.figures.splice(ct, 1, ele);
+        }
+        ct++
+        })
     }
 }

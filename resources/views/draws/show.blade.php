@@ -32,9 +32,9 @@
 <script src="{{asset('/Figure.js') }}"></script>
 
 <script> 
-const image =JSON.parse(@json($image));
+const image =JSON.parse(@json($draw->image));
 
-Figure.figures = image.figures;
+Figure.figures = image.figures || [];
 
 function setup(){
     let canvas =  createCanvas(image.canvas.width, image.canvas.height);
@@ -43,9 +43,10 @@ function setup(){
     let relativeX = windowWidth / 2 - image.canvas.width / 2;
     let relativeY = windowHeight / 2 - image.canvas.height / 2
 
-  
-    document.getElementById('relx').value = relativeX;
-    document.getElementById('rely').value = relativeY;
+
+    Interface.relx = relativeX
+    Interface.rely = relativeY
+
 
     // posiciona el canvas en el centro de la pagina 
     canvas.position(relativeX,  relativeY)
@@ -66,7 +67,7 @@ function add(figure){
         posY: image.canvas.height / 2,
         height: 150,
         width:50,
-        index: Figure.figures.length + 1,
+        index: Figure.figures.length,
         selected: true
     });
 }
@@ -96,8 +97,9 @@ function addColor(color){
 }
 
 function bind(){
-    addColor({r:123,g:33 ,b: 12})
-    // Figure.reverse();
+    // addColor({r:123,g:33 ,b: 12})
+     Figure.reverse();
+    // save(crypto.randomUUID() +'.png')
 }
 </script>
 </html>

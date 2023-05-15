@@ -49,7 +49,7 @@ Route::controller(UserController::class)->prefix('users')
 Route::controller(DrawController::class)->prefix('draws')
 ->group(function () {
     Route::get('/','index')->name('draws');
-    Route::post('/','store')->name('draws.store');
+    Route::get('/','store')->name('draws.store');
     Route::get('/{id}','show')->name('draws.show');
     Route::get('/get/{id}','get')->name('draws.get');
     Route::put('/','update')->name('draws.edit');

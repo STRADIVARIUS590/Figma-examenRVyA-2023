@@ -38,9 +38,14 @@ class DrawController extends Controller
      */
     public function store(Request $request)
     {
+        // $user_id = Auth::user()->id;
+        !$request->has('user_id') ? $request->merge(['user_id' =>  Auth::user()->id]) : null;
+       
+        !$request->has('image') ? $request->merge(['image' => json_encode(['canvas' => ['width' => 400, 'height' => 400], 'figures' => []])]) : null;
+        // return $request->all();
         $draw = Draw::create($request->all());
-        
-        return redirect()->back()->with('success', 'ok');
+
+        return redirect(action([DrawController::class, 'show'], ['id' => $draw->id]));
     }
 
     /**
@@ -50,9 +55,9 @@ class DrawController extends Controller
     {
         $draw = Draw::find($id);
 
-        $image = $draw->image = preg_replace('/\n/','' ,$draw->image);
+        $draw->image  = preg_replace('/\n/','' ,$draw->image);
 
-        return view('draws.show', get_defined_vars());
+        return view('draws.show', compact('draw'));
     }
 
     /**

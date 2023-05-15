@@ -1,5 +1,8 @@
 class Interface{
 
+    // posicion del punto 0,0 del canvas, respecto a todo el documento 
+    static relx
+    static rely
 
 
     static border(figure, e){
