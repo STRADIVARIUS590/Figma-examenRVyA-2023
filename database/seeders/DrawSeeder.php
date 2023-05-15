@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Draw;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,13 +16,14 @@ class DrawSeeder extends Seeder
     {
         $jsonData = json_decode(file_get_contents("database/jsons/draws.json"), true);
 
-        foreach($jsonData as $draw){
+        $user_ids = User::pluck('id');
 
+        foreach($jsonData as $draw){
             $d = new Draw([
-                'user_id' => 1,
-                'image' => json_encode($draw)     
+                'name' => $draw['name'],
+                'user_id' => $user_ids->random(),
+                'image' => json_encode([ 'canvas' => $draw['canvas'],'figures' =>  $draw['figures']])   
             ]);
-                
             $d->save();
         }
         

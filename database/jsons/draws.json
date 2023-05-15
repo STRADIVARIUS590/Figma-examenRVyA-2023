@@ -1,6 +1,6 @@
 [
     {
-        "name" : "aaaaaaaaaaaaaaaaaaaaaaaaa", 
+        "name" : "Proyecto 1", 
         "canvas": {
             "width" : 450,
             "height" : 450
@@ -61,6 +61,7 @@
 
 
     {
+        "name" : "Proyecto 2",
         "canvas": {
             "width" : 200,
             "height" : 200
@@ -79,6 +80,7 @@
         ]
     },
     {
+        "name" : "Proyecto 3",
         "canvas": {
             "width" : 200,
             "height" : 200

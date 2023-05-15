@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Draw;
+use App\Models\User;
 
 class DrawController extends Controller
 {
@@ -38,11 +39,14 @@ class DrawController extends Controller
      */
     public function store(Request $request)
     {
-        // $user_id = Auth::user()->id;
-        !$request->has('user_id') ? $request->merge(['user_id' =>  Auth::user()->id]) : null;
+        $user = Auth::user() ?? $request->user_id ?? User::find(1);
+
+        !$request->has('user_id') ? $request->merge(['user_id' => $user->id ]) : null;
        
         !$request->has('image') ? $request->merge(['image' => json_encode(['canvas' => ['width' => 400, 'height' => 400], 'figures' => []])]) : null;
-        // return $request->all();
+     
+        !$request->has('name') ? $request->merge(['name' => "Proyecto (".(1 + $user->draws->count()) .")"]) : null;
+
         $draw = Draw::create($request->all());
 
         return redirect(action([DrawController::class, 'show'], ['id' => $draw->id]));

@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    {{$draw}}
+    {{-- {{$draw}} --}}
 
     <input type="text" value="0" id="relx">
     <input type="text" value="0" id="rely">
