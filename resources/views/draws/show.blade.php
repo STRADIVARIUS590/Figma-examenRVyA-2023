@@ -16,8 +16,6 @@
 <body>
     {{-- {{$draw}} --}}
 
-    <input type="text" value="0" id="relx">
-    <input type="text" value="0" id="rely">
     <input type="text" value="0" id="console">
 
     
@@ -26,6 +24,11 @@
     <button onclick="add('ellipse')">Circulo</button>
     <button onclick="addColor('yellow')">amarillo</button>
     <button onclick="addColor('red')">rojo</button>
+    <input type="text" value="255" id ='r'>
+    <input type="text" value="255" id ='g'>
+    <input type="text" value="255" id ='b'>
+    <button onclick="addColor({r:23, g: 12, b: 34})">rojo</button>
+    <button onclick="addColor({r:r.value, g:g.value, b: b.value})">rgbvals</button>
     <div id="sketch-holder">
     </div>
 
@@ -57,16 +60,12 @@ function setup(){
     let canvas =  createCanvas(image.canvas.width, image.canvas.height);
     
     //  posicion de 0,0 del canvas respecto a toda la pantalla
-    let relativeX = windowWidth / 2 - image.canvas.width / 2;
-    let relativeY = windowHeight / 2 - image.canvas.height / 2
-
-
-    Interface.relx = relativeX
-    Interface.rely = relativeY
-
+    Interface.relx = windowWidth / 2 - image.canvas.width / 2
+    Interface.rely = windowHeight / 2 - image.canvas.height / 2
+    Interface.sketch_holder = document.getElementById("sketch-holder")
 
     // posiciona el canvas en el centro de la pagina 
-    canvas.position(relativeX,  relativeY)
+    canvas.position(Interface.relx,  Interface.rely)
     canvas.parent('sketch-holder');
 }
 

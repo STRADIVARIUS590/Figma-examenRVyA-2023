@@ -4,6 +4,8 @@ class Interface{
     static relx
     static rely
 
+    // donde ponermos los divs qeu rodean a las figuras
+    static sketch_holder
 
     static border(figure, e){
             if(figure.selected){

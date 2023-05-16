@@ -63,6 +63,7 @@ class Figure {
     static draw(){
     
         document.getElementById('console').value = Figure.selected().indexes
+        
         Figure.figures.forEach(figure => {
 
             let c = figure.color;
@@ -86,7 +87,7 @@ class Figure {
                             let d = document.createElement('div');
                             let relx = Interface.relx
                             let rely = Interface.rely
-                            let sketch_holeder = document.getElementById("sketch-holder")
+                            let sketch_holeder = Interface.sketch_holder
                             d.setAttribute('id', figure.index);
                             d.setAttribute('type', figure.type);
                             let pos = Figure.KEYS[figure.type].rectBorder(figure, relx, rely)
@@ -153,7 +154,7 @@ class Figure {
                         let d = document.createElement('div');
                         let relx = Interface.relx
                         let rely = Interface.rely
-                        let sketch_holeder = document.getElementById("sketch-holder")
+                        let sketch_holeder = Interface.sketch_holder
                         d.setAttribute('id', figure.index);
                         d.setAttribute('type', figure.type);
                         let pos = Figure.KEYS[figure.type].rectBorder(figure, relx, rely)
@@ -223,7 +224,7 @@ class Figure {
                         let d = document.createElement('div');
                         let relx = Interface.relx
                         let rely = Interface.rely
-                        let sketch_holeder = document.getElementById("sketch-holder")
+                        let sketch_holeder = Interface.sketch_holder;
                         d.setAttribute('id', figure.index);
                         d.setAttribute('type', figure.type);
                         let pos = Figure.KEYS[figure.type].rectBorder(figure, relx, rely)
