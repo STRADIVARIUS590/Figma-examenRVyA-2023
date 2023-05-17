@@ -3,12 +3,14 @@ import './bootstrap';
 import { createApp } from "vue/dist/vue.esm-bundler";
 
 import ProjectsIndex from "./Pages/Projects/Index.vue";
+import ProjectsEdit from "./Pages/Projects/Edit.vue";
 
 import { provide } from 'vue';
 
 const app = createApp({
     components: {
         ProjectsIndex,
+        ProjectsEdit,
     },
     setup() {
         provide(
