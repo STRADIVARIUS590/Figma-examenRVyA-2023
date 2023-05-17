@@ -46,7 +46,7 @@ Route::controller(UserController::class)->prefix('users')
 });
 
 //rutas de dibujos
-Route::controller(DrawController::class)->prefix('draws')
+Route::controller(DrawController::class)->prefix('projects')
 ->group(function () {
     Route::get('/','index')->name('draws');
     Route::get('/','store')->name('draws.store');
