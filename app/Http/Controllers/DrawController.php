@@ -27,7 +27,7 @@ class DrawController extends Controller
         $breadcrum_info = $this->breadcrum_info;
         $draws = Draw::all();
 
-        #return $draw;
+        #return $draws;
         return view('draws.index', get_defined_vars());
     }
 

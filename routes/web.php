@@ -48,10 +48,10 @@ Route::controller(UserController::class)->prefix('users')
 //rutas de dibujos
 Route::controller(DrawController::class)->prefix('projects')
 ->group(function () {
-    Route::get('/','index')->name('draws');
-    Route::get('/','store')->name('draws.store');
-    Route::get('/{id}','show')->name('draws.show');
-    Route::get('/get/{id}','get')->name('draws.get');
-    Route::put('/','update')->name('draws.edit');
-    Route::delete('/{id}','destroy')->name('draws.destroy');
+    Route::get('/','index')->name('projects');
+    Route::get('/','store')->name('projects.store');
+    Route::get('/{id}','show')->name('projects.show');
+    Route::get('/get/{id}','get')->name('projects.get');
+    Route::put('/','update')->name('projects.edit');
+    Route::delete('/{id}','destroy')->name('projects.destroy');
 });
