@@ -25,7 +25,7 @@ class DrawController extends Controller
     public function index()
     {
         $breadcrum_info = $this->breadcrum_info;
-        $draws = Draw::all();
+        $draws = Draw::with('user', 'figures')->get();
 
         #return $draws;
         return view('draws.index', get_defined_vars());
@@ -39,17 +39,15 @@ class DrawController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user() ?? $request->user_id ?? User::find(1);
-
-        !$request->has('user_id') ? $request->merge(['user_id' => $user->id ]) : null;
-       
-        !$request->has('image') ? $request->merge(['image' => json_encode(['canvas' => ['width' => 400, 'height' => 400], 'figures' => []])]) : null;
-     
-        !$request->has('name') ? $request->merge(['name' => "Proyecto (".(1 + $user->draws->count()) .")"]) : null;
-
         $draw = Draw::create($request->all());
 
-        return redirect(action([DrawController::class, 'show'], ['id' => $draw->id]));
+        if($request->has('figures')){
+            foreach($figures as $request_figure){
+                $figure = Figure::create($request_figure);
+                $figure->draw_id = $draw->id;
+                $figure->save();
+            }
+        }
     }
 
     /**
@@ -57,10 +55,10 @@ class DrawController extends Controller
      */
     public function show($id)
     {
-        $draw = Draw::find($id);
+        $draw = Draw::with('figures', 'user')
+                    ->findOrFail($id);
 
-        $draw->image  = preg_replace('/\n/','' ,$draw->image);
-
+        return $draw;
         return view('draws.show', compact('draw'));
     }
 
@@ -72,7 +70,8 @@ class DrawController extends Controller
      */
     public function get($id)
     {
-        $draw = Draw::first();
+        $draw = Draw::with('figures', 'user')
+                    ->findOrFail($id);
 
         return $this->jsonResponse("Registro consultado correctamente", $draw, Response::HTTP_OK, null);
     }
@@ -90,7 +89,15 @@ class DrawController extends Controller
 
         $draw->update($request->all());
 
-        return redirect()->back()->with('success', 'ok');
+        if($request->has('figures')){
+            foreach($figures as $request_figure){
+                $figure = Figure::findOrFail($request_figure->id);
+                $figure->update($request_figure);
+                $figure->save();
+            }
+        }
+
+        return $this->jsonResponse("Registro consultado correctamente", $draw, Response::HTTP_OK, null);
     }
 
     /**
@@ -107,4 +114,29 @@ class DrawController extends Controller
 
         return $this->jsonResponse("Registro Eliminado correctamente", null, Response::HTTP_OK, null);
     }
+
+    // //funciones alternas
+    // public function store(Request $request)
+    // {
+    //     $user = Auth::user() ?? $request->user_id ?? User::find(1);
+
+    //     !$request->has('user_id') ? $request->merge(['user_id' => $user->id ]) : null;
+       
+    //     !$request->has('image') ? $request->merge(['image' => json_encode(['canvas' => ['width' => 400, 'height' => 400], 'figures' => []])]) : null;
+     
+    //     !$request->has('name') ? $request->merge(['name' => "Proyecto (".(1 + $user->draws->count()) .")"]) : null;
+
+    //     $draw = Draw::create($request->all());
+
+    //     return redirect(action([DrawController::class, 'show'], ['id' => $draw->id]));
+    // }
+
+    // public function show($id)
+    // {
+    //     $draw = Draw::find($id);
+
+    //     $draw->image  = preg_replace('/\n/','' ,$draw->image);
+
+    //     return view('draws.show', compact('draw'));
+    // }
 }

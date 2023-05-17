@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Draw extends Model
+class Figure extends Model
 {
     use HasFactory;
 
@@ -15,8 +15,21 @@ class Draw extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'user_id',
+        'index',
+        'x',
+        'y',
+        'h',
+        'w',
+        'opacity',
+        'border_size',
+        'border_opacity',
+        'radius_corner',
+        'font_size',
+        'type',
+        'color',
+        'border_color',
+        'visible',
+        'draw_id',
     ];
 
     /**
@@ -30,13 +43,8 @@ class Draw extends Model
         'deleted_at',
     ];
 
-    public function figures()
+    public function draw()
     {
-        return $this->hasMany(Figure::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Draw::class);
     }
 }
