@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Draw;
 use App\Models\User;
+use App\Models\Figure;
 
 class DrawController extends Controller
 {
@@ -48,6 +49,11 @@ class DrawController extends Controller
                 $figure->save();
             }
         }
+
+        //mandar draw con figuras actualizadas
+        $draw = Draw::with('figures', 'user')->findOrFail($draw->id);
+
+        return view('draws.show', get_defined_vars());
     }
 
     /**
@@ -58,7 +64,7 @@ class DrawController extends Controller
         $draw = Draw::with('figures', 'user')
                     ->findOrFail($id);
 
-        return $draw;
+        #return $draw;
         return view('draws.show', compact('draw'));
     }
 
@@ -85,19 +91,28 @@ class DrawController extends Controller
      */
     public function update(Request $request)
     {
-        $draw = Draw::where('id', $request->id)->firstOrFail();
+        $draw = Draw::findOrFail($id);
 
         $draw->update($request->all());
 
         if($request->has('figures')){
             foreach($figures as $request_figure){
-                $figure = Figure::findOrFail($request_figure->id);
-                $figure->update($request_figure);
-                $figure->save();
+                if(isset($request_figure->id)){
+                    $figure = Figure::findOrFail($request_figure->id);
+                    $figure->update($request_figure);
+                    $figure->save();
+                }else{
+                    $figure = Figure::create($request_figure);
+                    $figure->draw_id = $draw->id;
+                    $figure->save();
+                }
             }
         }
 
-        return $this->jsonResponse("Registro consultado correctamente", $draw, Response::HTTP_OK, null);
+        //mandar draw con figuras actualizadas
+        $draw = Draw::with('figures', 'user')->findOrFail($id);
+
+        return $this->jsonResponse("Registro actualizado correctamente", $draw, Response::HTTP_OK, null);
     }
 
     /**
