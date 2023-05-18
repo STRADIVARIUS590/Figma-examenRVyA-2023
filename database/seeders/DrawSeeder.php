@@ -15,8 +15,9 @@ class DrawSeeder extends Seeder
     public function run(): void
     {
         foreach(User::all() as $user){
+            $user->load('draws');
             $draw = Draw::create([
-                'name' => 'Proyecto ' . $user->id,
+                'name' => 'Proyecto ('.(1 + $user->draws->count()) .')',
                 'user_id' => $user->id,
             ]);
         }

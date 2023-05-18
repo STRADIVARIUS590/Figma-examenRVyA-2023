@@ -38,22 +38,16 @@ class DrawController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        $draw = Draw::create($request->all());
+        $user = auth()->user()->load('draws');
 
-        if($request->has('figures')){
-            foreach($figures as $request_figure){
-                $figure = Figure::create($request_figure);
-                $figure->draw_id = $draw->id;
-                $figure->save();
-            }
-        }
+        $draw = Draw::create([
+            'name' => 'Proyecto ('.(1 + $user->draws->count()) .')',
+            'user_id' => Auth::user()->id,
+        ]);
 
-        //mandar draw con figuras actualizadas
-        $draw = Draw::with('figures', 'user')->findOrFail($draw->id);
-
-        return view('draws.show', get_defined_vars());
+        return redirect(action([DrawController::class, 'show'], ['id' => $draw->id]));
     }
 
     /**
@@ -79,6 +73,7 @@ class DrawController extends Controller
         $draw = Draw::with('figures', 'user')
                     ->findOrFail($id);
 
+        #return $draw;
         return $this->jsonResponse("Registro consultado correctamente", $draw, Response::HTTP_OK, null);
     }
 
@@ -91,7 +86,7 @@ class DrawController extends Controller
      */
     public function update(Request $request)
     {
-        $draw = Draw::findOrFail($id);
+        $draw = Draw::findOrFail($request->id);
 
         $draw->update($request->all());
 
@@ -130,7 +125,7 @@ class DrawController extends Controller
         return $this->jsonResponse("Registro Eliminado correctamente", null, Response::HTTP_OK, null);
     }
 
-    // //funciones alternas
+    //funciones alternas
     // public function store(Request $request)
     // {
     //     $user = Auth::user() ?? $request->user_id ?? User::find(1);
