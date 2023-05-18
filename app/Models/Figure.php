@@ -29,6 +29,7 @@ class Figure extends Model
         'type',
         'color',
         'border_color',
+        'text',
         'visible',
         'draw_id',
     ];
