@@ -91,7 +91,7 @@ class DrawController extends Controller
         $draw->update($request->all());
 
         if($request->has('figures')){
-            foreach($figures as $request_figure){
+            foreach($request->figures as $request_figure){
                 if(isset($request_figure['id'])){
                     $figure = Figure::findOrFail($request_figure['id']);
                     $figure->update($request_figure);
