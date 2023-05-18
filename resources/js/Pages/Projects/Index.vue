@@ -66,10 +66,6 @@ export default {
         const projects = ref(props.projects);
         const searchString = ref("");
 
-        projects.value.forEach(project => {
-            project.image = JSON.parse(project.image)
-        })
-
         const filteredProjects = computed(() => {
             return projects.value.filter((project) => {
                 var filter = true;

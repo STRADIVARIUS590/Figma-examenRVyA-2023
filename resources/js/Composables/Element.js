@@ -3,10 +3,16 @@ import { reactive, ref } from "vue";
 export default function useInterface() {
 
     const hexToRgb = (hex) =>{
-        return{
+        var result = hex.match(/.{1,2}/g);
+
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16),
+        } : {
             r: 0,
             g: 0,
-            b: 0,
+            b : 0,
         }
     }
 

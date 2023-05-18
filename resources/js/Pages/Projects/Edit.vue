@@ -66,6 +66,9 @@
             <div class="p-3" v-if="selected_figure">
                 <h4 class="text-center">{{ selected_figure.name }}</h4>
                 <pre>{{ selected_figure }}</pre>
+                <!--<template v-for="(attr, key, index) in selected_figure" :key="key" >
+                    <input type="text" v-model="selected_figure[key]">
+                </template>-->
             </div>
         </div>
     </div>
