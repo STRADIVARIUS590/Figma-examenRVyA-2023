@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->string('color')->nullable();
             $table->string('border_color')->nullable();
+            $table->string('text')->nullable();
             $table->boolean('visible')->default(true);
             $table->foreignId('draw_id')->constrained();
             $table->timestamps();

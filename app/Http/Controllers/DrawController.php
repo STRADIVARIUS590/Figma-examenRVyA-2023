@@ -58,7 +58,7 @@ class DrawController extends Controller
         $draw = Draw::with('figures', 'user')
                     ->findOrFail($id);
 
-        #return $draw;
+        return $draw;
         return view('draws.show', compact('draw'));
     }
 
