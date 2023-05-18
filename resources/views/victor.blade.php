@@ -6,7 +6,7 @@
         html, body {
             margin: 0;
             padding: 0;
-            background-image: url('{{ asset("victor.png") }}');
+            background-image: url('{{ asset("no-name.png") }}');
             background-size: cover;
             background-position: center center calc(50% - 50vh);
             background-repeat: no-repeat;
