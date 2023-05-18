@@ -13,9 +13,7 @@
     
 </head>
 
-<body>
-    {{-- {{$draw}} --}}
-
+<body class="bg-dark">
     
     <div id="app">
         <projects-edit

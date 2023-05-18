@@ -29,7 +29,8 @@
                 <h3>{{ project.name }}</h3>
             </div>
             <div class="col-3 d-flex justify-content-end">
-                <button class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Guardar">
+                <button class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Guardar"
+                    @click="save()">
                     <i class="display-6 text-light fa-solid fa-floppy-disk"></i>
                 </button>
                 <form class="col-ms-auto ms-3" :action="route('logout')" method="POST">
@@ -42,12 +43,39 @@
         </div>
     </div> 
 
+    <div class="row w-100 mx-0">
+        <div class="col-2 sidebar">
+            <div class="row w-100 mx-0" v-for="figure in project.figures" :key="figure.index">
+                <div class="col-9">
+                    <div role="button" :class="'ps-4 py-2 ' + (mouse.selection_index == figure.index ? 'text-light' : '')"
+                    @click="selectFigure(figure.index)">
+                        <h6>{{ figure.name }}</h6>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <button @click="figure.visible = (figure.visible == 1 ? 0 : 1)" class="btn">
+                        <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
+                        ' fa-solid fa-eye'" v-if="figure.visible"></i>
+                        <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
+                        ' fa-solid fa-eye-slash'" v-else></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 ms-auto sidebar">
+            <div class="p-3" v-if="selected_figure">
+                <h4 class="text-center">{{ selected_figure.name }}</h4>
+                <pre>{{ selected_figure }}</pre>
+            </div>
+        </div>
+    </div>
+    
     <div id="sketch-holder"></div>
 </template>
 
 <script>
 import useInterface from '@/Composables/Element.js'
-import { inject } from 'vue';
+import { computed, inject } from 'vue';
 export default {
     components:{
     },
@@ -59,28 +87,34 @@ export default {
         
         const {
             mouse,
-            figures,
+            project,
             cleanMouseQueue,
             addElement,
             deleteElement,
             selectAction,
             drawFigure,
+            selectFigure,
         } = useInterface();
 
-        //figures.value = JSON.parse(props.project.image).figures;
+        project.value = props.project;
+
+        const canvasClicked = () => {
+            if(mouse.type != 'none') addElement(project.value.id)
+        }
 
         let workspace = function(p) {
 
             p.setup = function() {
-                let canvas =  p.createCanvas(800, 550);
+                let canvas =  p.createCanvas(p.windowWidth / 2 , p.windowHeight / 5 * 4);
                 
                 //  posicion de 0,0 del canvas respecto a toda la pantalla
-                mouse.relx = p.windowWidth / 2 - 400
-                mouse.rely = p.windowHeight / 2 - 250
+                mouse.relx = p.windowWidth / 2 - (p.windowWidth / 4)
+                mouse.rely = p.windowHeight / 2 - (p.windowHeight / 3)
 
                 // posiciona el canvas en el centro de la pagina 
                 canvas.position(mouse.relx, mouse.rely)
                 canvas.parent('sketch-holder');
+                canvas.mouseClicked(canvasClicked)
             }
 
             p.draw = function() {
@@ -90,28 +124,43 @@ export default {
                 
                 p.background('#888888')
 
-                figures.value.forEach((figure) =>{
+                project.value.figures.forEach((figure) =>{
                     drawFigure(figure, p);
                 });
-            }
-
-            p.mouseClicked = function() {
-                if(mouse.type != 'none') addElement()
             }
         };
 
         let myp5 = new p5(workspace);
 
+        const selected_figure = computed(() => {
+            return project.value.figures.find((figure) => figure.index == mouse.selection_index)
+        })
+
+        const save = () => {
+            axios
+                .put(route('projects.edit'), project.value)
+                .then(() => {
+                    Swal.fire(
+                        "Hecho",
+                        "Progreso guardado correctamente",
+                        "success"
+                    )
+                })
+        }
+
         return{
             myp5,
             csrf: inject('csrf'),
             mouse,
-            figures,
+            project,
             cleanMouseQueue,
             addElement,
             deleteElement,
             selectAction,
             drawFigure,
+            selectFigure,
+            selected_figure,
+            save
         }
     },
 }
@@ -120,5 +169,9 @@ export default {
 <style scoped>
 .headerBar{
     background: #AB85D1;
+}
+.sidebar{
+    background: #999999;
+    height: 89.75vh;
 }
 </style>

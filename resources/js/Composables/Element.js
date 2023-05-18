@@ -20,7 +20,10 @@ export default function useInterface() {
         action: 'move',
     })
 
-    const figures = ref([]);
+    const project = ref({
+        name: "",
+        figures: [],
+    });
 
     const cleanMouseQueue = () =>{
         Object.assign(mouse, 
@@ -41,41 +44,89 @@ export default function useInterface() {
         );
     }
 
-    const addElement = () => {
-        figures.value.push({
-            index: figures.value.length,
+    const selectFigure = (index) => {
+
+        var selected_figure = project.value.figures.find((figure) => figure.index == index)
+
+        Object.assign(mouse, 
+            {
+                type: "none",
+                selection_index: index,
+                action: "move",
+                relx: mouse.x - selected_figure.x,
+                rely: mouse.y - selected_figure.y,
+            }
+        );
+    }
+
+    const addElement = (id) => {
+        project.value.figures.push({
+            index: project.value.figures.length,
             type: mouse.type,
             x: mouse.x,
             y: mouse.y,
-            h: 150,
-            w: 50,
+            h: 50,
+            w: 60,
+            name: mouse.type + "(" + project.value.figures.length + ")",
             color: "#000000",
-            opacity: 0,
-            border_size: 1,
+            opacity: 100,
+            border_size: 2,
             border_color: "#000000",
             border_opacity: 100,
             radius_corner: 0,
-            font_size: 20,
-            text: "",
+            font_size: 25,
+            text: "Texto",
             visible: 1,
+            draw_id: id,
         });
 
         cleanMouseQueue();
     }
 
     const deleteElement = (index) =>{
-        figures.value.splice(index,1);
+        project.value.figures.splice(index,1);
     }
 
     const drawFigure = (figure, p) =>{
         if(figure.visible){
+
+            if(figure.index == mouse.selection_index){
+                p.stroke(0, 0, 200, 1000)
+                p.strokeWeight(1);
+                p.fill(0,0,0, 0);
+
+                var x,y,x2,y2;
+
+                switch(figure.type){
+                    case 'rect': case 'line':
+                        x = figure.x - 5
+                        y = figure.y - 5
+                        x2 = figure.w + 10
+                        y2 = figure.h + 10
+                        break;
+                    case 'ellipse':
+                        x = figure.x - figure.w/2 - 5
+                        y = figure.y - figure.h/2 - 5
+                        x2 = figure.w + 10
+                        y2 = figure.h + 10
+                        break;
+                    case 'text':
+                        x = figure.x - 5
+                        y = figure.y - figure.font_size
+                        x2 = figure.w + 10
+                        y2 = figure.h - (figure.font_size/2)
+                        break;
+                }
+                p.rect(x,y,x2,y2);
+            }
+
             //Borde
             var border_color = hexToRgb(figure.border_color);
-            p.stroke(border_color.r, border_color.g, border_color.b, figure.border_opacity)
+            p.stroke(border_color.r, border_color.g, border_color.b, figure.border_opacity * 10)
             p.strokeWeight(figure.border_size);
             //Relleno
             var color = hexToRgb(figure.color);
-            p.fill(color.r, color.g, color.b, figure.opacity)
+            p.fill(color.r, color.g, color.b, figure.opacity * 10)
 
             switch(figure.type){
                 case 'rect':
@@ -88,6 +139,7 @@ export default function useInterface() {
                     p.line(figure.x,figure.y,(figure.x + figure.w),(figure.y + figure.h))
                     break;
                 case 'text':
+                    p.textSize(figure.font_size);
                     p.text(figure.text,figure.x,figure.y)
                     break;
             }
@@ -96,11 +148,12 @@ export default function useInterface() {
 
     return {
         mouse,
-        figures,
+        project,
         cleanMouseQueue,
         addElement,
         deleteElement,
         selectAction,
         drawFigure,
+        selectFigure,
     }
 }

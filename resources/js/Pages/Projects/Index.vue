@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-3 mb-4" v-for="(project, index) in filteredProjects" :key="project.id">
                         <div class="project-card card p-3 h-100">
-                            <a :href="route('draws.show', project.id)">
+                            <a :href="route('projects.show', project.id)">
                                 <h5>{{ project.name }}</h5>
                                 <h6 class="text-muted"> Abierto el {{ formatDateHourTextShort(project.updated_at) }}</h6>
                             </a>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="col-3">
                         <div class="project-card card p-3 h-100">
-                            <a :href="route('draws.store')">
+                            <a :href="route('projects.store')">
                                 <h5>Nuevo proyecto</h5>
                                 <h6 class="text-muted"> Crea un proyecto en blanco</h6>
                                 <button class="btn btn-success mt-2 w-100">
@@ -92,7 +92,7 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     axios
-                        .delete(route('draws.destroy', id))
+                        .delete(route('projects.destroy', id))
                         .then(() => {
                             Swal.fire(
                                 "Hecho",

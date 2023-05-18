@@ -105,7 +105,7 @@ class DrawController extends Controller
         }
 
         //mandar draw con figuras actualizadas
-        $draw = Draw::with('figures', 'user')->findOrFail($id);
+        $draw = Draw::with('figures', 'user')->findOrFail($draw->id);
 
         return $this->jsonResponse("Registro actualizado correctamente", $draw, Response::HTTP_OK, null);
     }
