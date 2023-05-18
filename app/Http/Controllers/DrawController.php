@@ -26,7 +26,9 @@ class DrawController extends Controller
     public function index()
     {
         $breadcrum_info = $this->breadcrum_info;
-        $draws = Draw::with('user', 'figures')->get();
+        $draws = Draw::with('user', 'figures')
+                    ->where('user_id', auth()->user()->id)
+                    ->get();
 
         #return $draws;
         return view('draws.index', get_defined_vars());

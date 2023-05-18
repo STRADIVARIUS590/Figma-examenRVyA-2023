@@ -29,8 +29,9 @@ return new class extends Migration
             $table->string('border_color')->nullable();
             $table->string('text')->nullable();
             $table->boolean('visible')->default(true);
-            $table->foreignId('draw_id')->constrained();
+            $table->foreignId('draw_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
