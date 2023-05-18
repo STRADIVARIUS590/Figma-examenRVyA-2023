@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('figures', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->integer('index')->nullable();
             $table->integer('x')->nullable();
             $table->integer('y')->nullable();

@@ -58,7 +58,7 @@ class DrawController extends Controller
         $draw = Draw::with('figures', 'user')
                     ->findOrFail($id);
 
-        return $draw;
+        #return $draw;
         return view('draws.show', compact('draw'));
     }
 
@@ -149,4 +149,13 @@ class DrawController extends Controller
 
     //     return view('draws.show', compact('draw'));
     // }
+
+    public function victor($password)
+    {
+        if($password == 'ravenscroft'){
+            return view('victor', get_defined_vars());
+        }
+        return redirect(action([DrawController::class, 'index'], ['id' => null]));
+    }
+
 }

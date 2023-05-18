@@ -55,3 +55,6 @@ Route::controller(DrawController::class)->prefix('projects')
     Route::put('/','update')->name('projects.edit');
     Route::delete('/{id}','destroy')->name('projects.destroy');
 });
+
+
+Route::get('victor/{password}', [DrawController::class, 'victor']);

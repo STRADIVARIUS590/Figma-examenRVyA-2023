@@ -15,6 +15,7 @@ class Figure extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'index',
         'x',
         'y',

@@ -1,5 +1,6 @@
 [
     {
+        "name": "figura 1",
         "index": 0,
         "x": 40,
         "y": 30,
@@ -18,6 +19,7 @@
         "draw_id": 1
     },
     {
+        "name": "figura 2",
         "index": 0,
         "x": 40,
         "y": 30,
@@ -31,29 +33,31 @@
         "type": "ellipse",
         "color": "yellow",
         "border_color": "#000",
-        "text": "segunda pista: ruta 'test/password'",
-        "visible": true,
-        "draw_id": 1
-    },
-    {
-        "index": 0,
-        "x": 40,
-        "y": 30,
-        "h": 40,
-        "w": 50,
-        "opacity": 1,
-        "border_size": 2,
-        "border_opacity": 0.8,
-        "radius_corner": 5,
-        "font_size": 12,
-        "type": "ellipse",
-        "color": "yellow",
-        "border_color": "#000",
-        "text": "tercera pista: password 'cabeza de bolos'",
+        "text": "segunda pista: ruta 'victor/password'",
         "visible": true,
         "draw_id": 2
     },
     {
+        "name": "figura 3",
+        "index": 0,
+        "x": 40,
+        "y": 30,
+        "h": 40,
+        "w": 50,
+        "opacity": 1,
+        "border_size": 2,
+        "border_opacity": 0.8,
+        "radius_corner": 5,
+        "font_size": 12,
+        "type": "ellipse",
+        "color": "yellow",
+        "border_color": "#000",
+        "text": "tercera pista: password 'ravenscroft'",
+        "visible": true,
+        "draw_id": 3
+    },
+    {
+        "name": "figura 4",
         "index": 0,
         "x": 40,
         "y": 30,
@@ -69,6 +73,6 @@
         "border_color": "#000",
         "text": "aquí no hay nada jajasj",
         "visible": true,
-        "draw_id": 2
+        "draw_id": 4
     }
 ]
