@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://kit.fontawesome.com/9b3bebdb5e.js" crossorigin="anonymous"></script>
+    <link href="{{ asset('fontawesome/css/fontawesome.css')}}" rel="stylesheet">
+    <link href="{{ asset('fontawesome/css/brands.css')}}" rel="stylesheet">
+    <link href="{{ asset('fontawesome/css/solid.css')}}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Proyectos</title>
 </head>
