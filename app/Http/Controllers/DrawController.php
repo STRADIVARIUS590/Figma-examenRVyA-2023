@@ -98,7 +98,7 @@ class DrawController extends Controller
                 if(isset($request_figure['id'])){
                     $figure = Figure::findOrFail($request_figure['id']);
                     //eliminar la figura
-                    if(isset($request_figure['delete']) && $request_figure['delete']){
+                    if(isset($request_figure['deleted']) && $request_figure['deleted']){
                         $figure->delete();
                     }else{//actualizar la figura
                         $figure->update($request_figure);
