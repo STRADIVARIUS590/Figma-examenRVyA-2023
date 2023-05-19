@@ -18,18 +18,6 @@
             <div class="bg-card card px-4 pb-5">
                 <h2 class="my-4">Mis proyectos</h2>
                 <div class="row">
-                    <div class="col-3 mb-4" v-for="(project, index) in filteredProjects" :key="project.id">
-                        <div class="project-card card p-3 h-100">
-                            <a :href="route('projects.show', project.id)">
-                                <h5>{{ project.name }}</h5>
-                                <h6 class="text-muted"> Abierto el {{ formatDateHourTextShort(project.updated_at) }}</h6>
-                            </a>
-                            <button class="btn btn-danger mt-2" @click="destroy(project.id, index)">
-                                <i class="me-2 text-light fa-solid fa-trash"></i>
-                                Eliminar
-                            </button>
-                        </div>
-                    </div>
                     <div class="col-3">
                         <div class="project-card card p-3 h-100">
                             <a :href="route('projects.store')">
@@ -40,6 +28,18 @@
                                     Crear
                                 </button>
                             </a>
+                        </div>
+                    </div>
+                    <div class="col-3 mb-4" v-for="(project, index) in filteredProjects" :key="project.id">
+                        <div class="project-card card p-3 h-100">
+                            <a :href="route('projects.show', project.id)">
+                                <h5>{{ project.name }}</h5>
+                                <h6 class="text-muted"> Abierto el {{ formatDateHourTextShort(project.updated_at) }}</h6>
+                            </a>
+                            <button class="btn btn-danger mt-2" @click="destroy(project.id, index)">
+                                <i class="me-2 text-light fa-solid fa-trash"></i>
+                                Eliminar
+                            </button>
                         </div>
                     </div>
                 </div>
