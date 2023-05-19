@@ -18,7 +18,7 @@
             <div class="bg-card card px-4 pb-5">
                 <h2 class="my-4">Mis proyectos</h2>
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-3 mb-4">
                         <div class="project-card card p-3 h-100">
                             <a :href="route('projects.store')">
                                 <h5>Nuevo proyecto</h5>
