@@ -12,8 +12,8 @@
         "radius_corner": 5,
         "font_size": 12,
         "type": "ellipse",
-        "color": "yellow",
-        "border_color": "#000",
+        "color": "#FFFF00",
+        "border_color": "#000000",
         "text": "primera pista: ve el texto de la figura 2",
         "visible": true,
         "draw_id": 1
@@ -31,8 +31,8 @@
         "radius_corner": 5,
         "font_size": 12,
         "type": "ellipse",
-        "color": "yellow",
-        "border_color": "#000",
+        "color": "#FFFF00",
+        "border_color": "#000000",
         "text": "segunda pista: ruta 'victor/password'",
         "visible": true,
         "draw_id": 2
@@ -50,8 +50,8 @@
         "radius_corner": 5,
         "font_size": 12,
         "type": "ellipse",
-        "color": "yellow",
-        "border_color": "#000",
+        "color": "#FFFF00",
+        "border_color": "#000000",
         "text": "tercera pista: password 'ravenscroft'",
         "visible": true,
         "draw_id": 3
@@ -69,8 +69,8 @@
         "radius_corner": 5,
         "font_size": 12,
         "type": "ellipse",
-        "color": "yellow",
-        "border_color": "#000",
+        "color": "#FFFF00",
+        "border_color": "#000000",
         "text": "aquí no hay nada jajasj",
         "visible": true,
         "draw_id": 4
