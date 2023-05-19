@@ -58,13 +58,13 @@
     <div class="row w-100 mx-0">
         <div class="col-2 sidebar">
             <div class="row w-100 mx-0" v-for="figure in project.figures" :key="figure.index">
-                <div class="col-9">
+                <div class="col-9" v-if="!figure.deleted">
                     <div role="button" :class="'ps-4 py-2 ' + (mouse.selection_index == figure.index ? 'text-light' : '')"
                     @click="selectFigure(figure.index)">
                         <h6>{{ figure.name }}</h6>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" v-if="!figure.deleted">
                     <button @click="figure.visible = (figure.visible == 1 ? 0 : 1)" class="btn">
                         <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
                         ' fa-solid fa-eye'" v-if="figure.visible"
@@ -83,6 +83,10 @@
                 <!--<template v-for="(attr, key, index) in selected_figure" :key="key" >
                     <input type="text" v-model="selected_figure[key]">
                 </template>-->
+                <button class="btn btn-danger mt-2 w-100" @click="deleteElement(selected_figure.index)">
+                    <i class="me-2 text-light fa-solid fa-trash"></i>
+                    Eliminar
+                </button>
             </div>
         </div>
     </div>
@@ -165,7 +169,10 @@ export default {
         const save = () => {
             axios
                 .put(route('projects.edit'), project.value)
-                .then(() => {
+                .then((response) => {
+
+                    project.value.figures = response.data.data.figures;
+                    
                     Swal.fire(
                         "Hecho",
                         "Cambios guardados correctamente",

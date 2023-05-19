@@ -16,6 +16,8 @@ export default function useInterface() {
         }
     }
 
+    const lastIndex = ref(0);
+
     const mouse = reactive({
         x: 0,
         y: 0,
@@ -66,8 +68,14 @@ export default function useInterface() {
     }
 
     const addElement = (id) => {
+
+        project.value.figures.forEach((figure) => {
+
+            if(lastIndex.value <= figure.index) lastIndex.value = figure.index + 1
+        })
+
         project.value.figures.push({
-            index: project.value.figures.length,
+            index: lastIndex.value,
             type: mouse.type,
             x: mouse.x,
             y: mouse.y,
@@ -83,6 +91,7 @@ export default function useInterface() {
             font_size: 25,
             text: "Texto",
             visible: 1,
+            deleted: 0,
             draw_id: id,
         });
 
@@ -90,11 +99,21 @@ export default function useInterface() {
     }
 
     const deleteElement = (index) =>{
-        project.value.figures.splice(index,1);
+        let indexFigure = project.value.figures.findIndex(figure => figure.index === index)  
+        if(indexFigure >= 0){
+            project.value.figures[indexFigure].deleted = 1;
+            Object.assign(mouse, 
+                {        
+                    type: 'none',
+                    action: 'move',
+                    selection_index: -1,
+                }
+            );
+        }
     }
 
     const drawFigure = (figure, p) =>{
-        if(figure.visible){
+        if(figure.visible && !figure.deleted){
 
             if(figure.index == mouse.selection_index){
                 p.stroke(0, 0, 200, 1000)
@@ -161,5 +180,6 @@ export default function useInterface() {
         selectAction,
         drawFigure,
         selectFigure,
+        lastIndex
     }
 }
