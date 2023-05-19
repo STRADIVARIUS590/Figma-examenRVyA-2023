@@ -92,12 +92,19 @@ class DrawController extends Controller
 
         $draw->update($request->all());
 
+        //actualizar o crear las figuras
         if($request->has('figures')){
             foreach($request->figures as $request_figure){
                 if(isset($request_figure['id'])){
                     $figure = Figure::findOrFail($request_figure['id']);
-                    $figure->update($request_figure);
-                    $figure->save();
+                    //eliminar la figura
+                    if($request_figure['delete']){
+                        $figure->delete();
+                    }else{//actualizar la figura
+                        $figure->update($request_figure);
+                        $figure->save();
+                    }
+                //crear la figura
                 }else{
                     $figure = Figure::create($request_figure);
                     $figure->draw_id = $draw->id;
