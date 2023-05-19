@@ -21,18 +21,18 @@ Route::get('/', function () {
 })->name('welcome')->middleware('guest');
 
 Route::get('login', function () {
-    return redirect('/');
+    return view('auth.login');
 })->name('login');
 
 Route::get('register', function () {
-    return redirect('/');
+    return view('auth.register');
 });
 
 Route::get('/forgot-password', function () {
     return view('admin/forgot_password/index');
 })->name('forgot.password');
 
-Route::get('home', [DrawController::class, 'index']);
+Route::get('home', [DrawController::class, 'index'])->name('home');
 
 //rutas de usuarios
 Route::controller(UserController::class)->prefix('users')
@@ -56,5 +56,5 @@ Route::controller(DrawController::class)->prefix('projects')
     Route::delete('/{id}','destroy')->name('projects.destroy');
 });
 
-
 Route::get('victor/{password}', [DrawController::class, 'victor']);
+Route::post('users-register', [UserController::class, 'register'])->name('users.register');

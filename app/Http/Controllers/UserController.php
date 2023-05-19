@@ -87,4 +87,29 @@ class UserController extends Controller
 
         return $this->jsonResponse("Registro Eliminado correctamente", null, Response::HTTP_OK, null);
     }
+
+    /**
+     * Store a newly register resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $user = User::select('id','email')
+                   ->where('email', $request->email)
+                   ->first();
+
+        if($user){
+            return redirect()->back()->with('errors', 'Ese correo ya está revisado');
+        }
+
+        //contraseña
+        $request['password'] = isset($request['password']) ?  bcrypt($request['password']) : null;
+
+        //crear usuario
+        $user = User::create($request->all());
+
+        return redirect()->back()->with('success', 'ok');
+    }
 }
