@@ -26,7 +26,19 @@
                 </div>
             </div>
             <div class="mt-2 col-6 text-center">
-                <h3>{{ project.name }}</h3>
+                <input 
+                    v-if="editName"
+                    type="text" 
+                    class="form-control"
+                    v-model="project.name"
+                    @focusout="finishEdit()" 
+                    @keydown.enter="finishEdit()" 
+                />
+                <h3 v-else
+                    @click="editName = true"
+                >
+                    {{ project.name }}
+                </h3>
             </div>
             <div class="col-3 d-flex justify-content-end">
                 <button class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Guardar"
@@ -55,9 +67,11 @@
                 <div class="col-3">
                     <button @click="figure.visible = (figure.visible == 1 ? 0 : 1)" class="btn">
                         <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
-                        ' fa-solid fa-eye'" v-if="figure.visible"></i>
+                        ' fa-solid fa-eye'" v-if="figure.visible"
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Ocultar"></i>
                         <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
-                        ' fa-solid fa-eye-slash'" v-else></i>
+                        ' fa-solid fa-eye-slash'" v-else
+                        data-bs-toggle="tooltip" data-bs-placement="top" title="Mostrar"></i>
                     </button>
                 </div>
             </div>
@@ -78,7 +92,7 @@
 
 <script>
 import useInterface from '@/Composables/Element.js'
-import { computed, inject } from 'vue';
+import { computed, inject, ref } from 'vue';
 export default {
     components:{
     },
@@ -100,6 +114,8 @@ export default {
         } = useInterface();
 
         project.value = props.project;
+
+        const editName = ref(false);
 
         const canvasClicked = () => {
             if(mouse.type != 'none') addElement(project.value.id)
@@ -139,13 +155,20 @@ export default {
             return project.value.figures.find((figure) => figure.index == mouse.selection_index)
         })
 
+        const finishEdit = () => {
+            if(project.value.name.length > 0 && editName.value){
+                editName.value = false;
+                save();
+            }
+        }
+
         const save = () => {
             axios
                 .put(route('projects.edit'), project.value)
                 .then(() => {
                     Swal.fire(
                         "Hecho",
-                        "Progreso guardado correctamente",
+                        "Cambios guardados correctamente",
                         "success"
                     )
                 })
@@ -163,7 +186,9 @@ export default {
             drawFigure,
             selectFigure,
             selected_figure,
-            save
+            editName,
+            save,
+            finishEdit,
         }
     },
 }
