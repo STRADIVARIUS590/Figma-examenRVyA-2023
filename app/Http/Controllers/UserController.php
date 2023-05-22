@@ -104,12 +104,13 @@ class UserController extends Controller
             return redirect()->back()->with('errors', 'Ese correo ya está revisado');
         }
 
-        //contraseña
+        //contraseña y nombre
+        $request['name'] = isset($request['name']) ? $request['name'] : $request['username'];
         $request['password'] = isset($request['password']) ?  bcrypt($request['password']) : null;
 
         //crear usuario
         $user = User::create($request->all());
 
-        return redirect()->back()->with('success', 'ok');
+        return redirect()->route("login")->with('success', 'ok');
     }
 }
