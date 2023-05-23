@@ -10,7 +10,7 @@
 
 <body class="background">
     <div class="px-4 py-2 w-100 headerBar text-light d-flex">
-        <h1 class="mt-2 col font"><b>SUGMA</b></h1>
+        <h1 class="mt-2 col font titleName"><b>SUGMA</b></h1>
         
         <a class="btn landingbutton py-0 font mb-1" href="{{route('login')}}">
             <b>Comenzar</b>
@@ -29,7 +29,7 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 89.75vh;
+    height: 100vh;
     width: 100vw;
 }
 
@@ -43,8 +43,8 @@ a{
     position: absolute;
     width: 496px;
     height: 309px;
-    left: calc(50% - 496px/2 - 653px);
-    top: calc(50% - 309px/2 + 30.5px);
+    left: 5%;
+    top: 20%;
 
     font-size: 60px;
     line-height: 69px;
@@ -62,5 +62,14 @@ a{
     font-family: 'Yeseva One';
     font-style: normal;
     font-weight: 400;
+}
+.titleName
+{
+    font-size: 35px;
+}
+@media (max-width: 1200px) {
+  h1 {
+    width: 100%;
+  }
 }
 </style>

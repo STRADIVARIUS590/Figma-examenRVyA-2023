@@ -142,7 +142,7 @@ a{
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 89.75vh;
+    height: 100vh;
     width: 100vw;
 }
 </style>

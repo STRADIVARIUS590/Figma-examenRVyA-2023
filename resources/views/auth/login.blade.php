@@ -16,7 +16,7 @@
 
 <body class="background">
     <div class="px-4 py-2 w-100 headerBar text-light d-flex">
-        <h1 class="mt-2 col font">
+        <h1 class="mt-2 col font titleName">
             <b>
                 <a href="{{ route('welcome') }}">
                     SUGMA
@@ -145,7 +145,7 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    height: 89.75vh;
+    height: 100vh;
     width: 100vw;
 }
 .headerBar{
@@ -159,6 +159,10 @@
 h1 a{
     text-decoration: none;
     color: #ffffff; 
+}
+.titleName
+{
+    font-size: 35px;
 }
 h1 a:hover{
         color: #ffffff;
