@@ -3,12 +3,12 @@ import { reactive, ref } from "vue";
 export default function useInterface() {
 
     const hexToRgb = (hex) =>{
-        var result = hex.match(/.{1,2}/g);
+        var result = hex.slice(1).match(/.{1,2}/g);
 
         return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16),
+            r: parseInt(result[0], 16),
+            g: parseInt(result[1], 16),
+            b: parseInt(result[2], 16),
         } : {
             r: 0,
             g: 0,
@@ -74,11 +74,11 @@ export default function useInterface() {
             if(lastIndex.value <= figure.index) lastIndex.value = figure.index + 1
         })
 
-        project.value.figures.push({
+        project.value.figures.unshift({
             index: lastIndex.value,
             type: mouse.type,
-            x: mouse.x,
-            y: mouse.y,
+            x: Number(mouse.x?.toFixed(0)),
+            y: Number(mouse.y?.toFixed(0)),
             h: 50,
             w: 60,
             name: mouse.type + "(" + project.value.figures.length + ")",
@@ -96,6 +96,7 @@ export default function useInterface() {
         });
 
         cleanMouseQueue();
+        selectFigure(lastIndex.value);
     }
 
     const deleteElement = (index) =>{
@@ -147,15 +148,15 @@ export default function useInterface() {
 
             //Borde
             var border_color = hexToRgb(figure.border_color);
-            p.stroke(border_color.r, border_color.g, border_color.b, figure.border_opacity * 10)
+            p.stroke(border_color.r, border_color.g, border_color.b, (figure.border_opacity / 100) * 255)
             p.strokeWeight(figure.border_size);
             //Relleno
             var color = hexToRgb(figure.color);
-            p.fill(color.r, color.g, color.b, figure.opacity * 10)
+            p.fill(color.r, color.g, color.b, (figure.opacity / 100 ) * 255)
 
             switch(figure.type){
                 case 'rect':
-                    p.rect(figure.x,figure.y,figure.w,figure.h)
+                    p.rect(figure.x,figure.y,figure.w,figure.h, figure.radius_corner)
                     break;
                 case 'ellipse':
                     p.ellipse(figure.x,figure.y,figure.w,figure.h)
@@ -171,6 +172,18 @@ export default function useInterface() {
         }
     }
 
+    const moveLayer = (index, dir) => {
+
+        let indexFigure = project.value.figures.findIndex(figure => figure.index === index);
+        
+        let box = project.value.figures[indexFigure];
+
+        project.value.figures[indexFigure] = project.value.figures[indexFigure + dir];
+
+        project.value.figures[indexFigure + dir] = box;
+
+    };
+
     return {
         mouse,
         project,
@@ -180,6 +193,7 @@ export default function useInterface() {
         selectAction,
         drawFigure,
         selectFigure,
+        moveLayer,
         lastIndex
     }
 }

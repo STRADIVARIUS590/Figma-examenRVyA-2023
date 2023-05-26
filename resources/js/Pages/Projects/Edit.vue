@@ -57,33 +57,123 @@
 
     <div class="row w-100 mx-0">
         <div class="col-2 sidebar">
-            <div class="row w-100 mx-0" v-for="figure in project.figures" :key="figure.index">
-                <div class="col-9" v-if="!figure.deleted">
-                    <div role="button" :class="'ps-4 py-2 ' + (mouse.selection_index == figure.index ? 'text-light' : '')"
-                    @click="selectFigure(figure.index)">
-                        <h6>{{ figure.name }}</h6>
+            <div class="row w-100 mx-0" v-for="(figure, index) in project.figures" :key="figure.index">
+                <template v-if="!figure.deleted">
+                    <div class="col">
+                        <div role="button" :class="'ps-2 py-2 me-2 ' + (mouse.selection_index == figure.index ? 'text-light' : '')"
+                        @click="selectFigure(figure.index)">
+                            <h6>{{ figure.name }}</h6>
+                        </div>
                     </div>
-                </div>
-                <div class="col-3" v-if="!figure.deleted">
-                    <button @click="figure.visible = (figure.visible == 1 ? 0 : 1)" class="btn">
-                        <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
-                        ' fa-solid fa-eye'" v-if="figure.visible"
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Ocultar"></i>
-                        <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
-                        ' fa-solid fa-eye-slash'" v-else
-                        data-bs-toggle="tooltip" data-bs-placement="top" title="Mostrar"></i>
-                    </button>
-                </div>
+                    <div class="col d-flex d-inline-flex justify-content-end">
+                        <template v-if="project.figures.length > 1">
+                            <button @click="moveLayer(figure.index, 1)" class="btn p-1 m-0" v-if="index < project.figures.length-1">
+                                <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
+                                ' fa-solid fa-chevron-down'"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Mover una capa hacia atrás"></i>
+                            </button>
+                            <button @click="moveLayer(figure.index, -1)" class="btn p-1 m-0" v-if="index > 0">
+                                <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
+                                ' fa-solid fa-chevron-up'"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Mover una capa hacia adelante"></i>
+                            </button>
+                        </template>
+                        <button @click="figure.visible = (figure.visible == 1 ? 0 : 1)" class="btn p-1 m-0">
+                            <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
+                            ' fa-solid fa-eye'" v-if="figure.visible"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Ocultar"></i>
+                            <i :class="(mouse.selection_index == figure.index ? 'text-light' : 'text-dark') + 
+                            ' fa-solid fa-eye-slash'" v-else
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Mostrar"></i>
+                        </button>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="col-2 ms-auto sidebar">
             <div class="p-3" v-if="selected_figure">
-                <h4 class="text-center">{{ selected_figure.name }}</h4>
-                <pre>{{ selected_figure }}</pre>
-                <!--<template v-for="(attr, key, index) in selected_figure" :key="key" >
-                    <input type="text" v-model="selected_figure[key]">
-                </template>-->
-                <button class="btn btn-danger mt-2 w-100" @click="deleteElement(selected_figure.index)">
+                <div class="row">
+                    <div class="mb-4 col-12">
+                        <label><b>Nombre</b></label>
+                        <input type="text" v-model="selected_figure.name" class="form-control">
+                    </div>
+
+                    <div class="mb-4 col-12" v-if="selected_figure.type=='text'">
+                        <label><b>Texto</b></label>
+                        <textarea v-model="selected_figure.text" class="form-control" />
+                    </div>
+                    <div class="mb-4 col-12" v-if="selected_figure.type=='text'">
+                        <label><b>Tamaño de fuente</b></label>
+                        <input type="number" class="form-control" v-model="selected_figure.font_size" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+
+                    <div class="mb-2 mt-1 col-12">
+                        <label><b>Dimensiones</b></label>
+                    </div>
+
+                    <label class="mb-2 col-2 py-1"><b>x:</b></label>
+                    <div class="mb-2 col-10">
+                        <input type="number" class="form-control" v-model="selected_figure.x" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+
+                    <label class="mb-2 col-2 py-1"><b>y:</b></label>
+                    <div class="mb-2 col-10">
+                        <input type="number" class="form-control" v-model="selected_figure.y" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+
+                    <label class="mb-2 col-2 py-1"><b>w:</b></label>
+                    <div class="mb-2 col-10">
+                        <input type="number" class="form-control" v-model="selected_figure.w" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+
+                    <label class="mb-2 col-2 py-1"><b>h:</b></label>
+                    <div class="mb-2 col-10">
+                        <input type="number" class="form-control" v-model="selected_figure.h" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+
+                    <div class="mt-1 mb-2 col-12" v-if="selected_figure.type=='rect'">
+                        <label><b>Radio de esquinas</b></label>
+                        <input type="number" class="form-control" v-model="selected_figure.radius_corner" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+
+                    <div class="my-2 col-12">
+                        <label><b>Color</b></label>
+                    </div>
+                    <div class="mb-2 col-4">
+                        <input type="color" class="form-control form-control-color w-100" v-model="selected_figure.color" >
+                    </div>
+                    <div class="mb-2 col-6">
+                        <input type="number" class="form-control" v-model="selected_figure.opacity" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+                    <label class="mb-2 col-2 py-1"><b>%</b></label>
+
+                    <div class="my-2 col-12">
+                        <label><b>Borde</b></label>
+                    </div>
+                    <div class="mb-2 col-4">
+                        <input type="color" class="form-control form-control-color w-100" v-model="selected_figure.border_color" >
+                    </div>
+                    <div class="mb-2 col-6">
+                        <input type="number" class="form-control" v-model="selected_figure.border_opacity" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+                    <label class="mb-2 col-2 py-1"><b>%</b></label>
+
+                    <div class="mb-2 mt-1 col-12">
+                        <label><b>Grosor de borde</b></label>
+                        <input type="number" class="form-control" v-model="selected_figure.border_size" step="1"
+                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                    </div>
+                </div>
+
+                <button class="btn btn-danger mt-3 w-100" @click="deleteElement(selected_figure.index)">
                     <i class="me-2 text-light fa-solid fa-trash"></i>
                     Eliminar
                 </button>
@@ -115,6 +205,7 @@ export default {
             selectAction,
             drawFigure,
             selectFigure,
+            moveLayer,
         } = useInterface();
 
         project.value = props.project;
@@ -147,7 +238,9 @@ export default {
                 
                 p.background('#888888')
 
-                project.value.figures.forEach((figure) =>{
+                let copyArray = project.value.figures.map(fig =>{ return fig })
+
+                copyArray.reverse().forEach((figure) =>{
                     drawFigure(figure, p);
                 });
             }
@@ -187,6 +280,7 @@ export default {
             mouse,
             project,
             cleanMouseQueue,
+            moveLayer,
             addElement,
             deleteElement,
             selectAction,
@@ -208,5 +302,6 @@ export default {
 .sidebar{
     background: #999999;
     height: 89.75vh;
+    overflow: auto;
 }
 </style>
