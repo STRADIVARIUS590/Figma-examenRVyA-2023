@@ -17,6 +17,7 @@ class Draw extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'updated_at'
     ];
 
     public function figures()

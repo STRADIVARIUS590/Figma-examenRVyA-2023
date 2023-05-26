@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\Draw;
 use App\Models\User;
 use App\Models\Figure;
+use Carbon\Carbon;
 
 class DrawController extends Controller
 {
@@ -28,9 +29,8 @@ class DrawController extends Controller
         $breadcrum_info = $this->breadcrum_info;
         $draws = Draw::with('user', 'figures')
                     ->where('user_id', auth()->user()->id)
-                    ->get();
+                    ->latest('updated_at')->get();
 
-        #return $draws;
         return view('draws.index', get_defined_vars());
     }
 
@@ -90,6 +90,7 @@ class DrawController extends Controller
     {
         $draw = Draw::findOrFail($request->id);
 
+        $request['updated_at'] = Carbon::now();
         $draw->update($request->all());
 
         //actualizar o crear las figuras
