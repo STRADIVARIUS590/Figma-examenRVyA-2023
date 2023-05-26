@@ -3,6 +3,13 @@
         <div class="row">
             <div class="col-3">
                 <div class="d-flex">
+                    <h1 class="mt-2 me-3 col font titleName">
+                        <a :href="route('projects')">
+                            <b>
+                                SUGMA
+                            </b>
+                        </a>
+                    </h1>
                     <button @click="selectAction('none', 'move')"
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Mover">
                         <i class="display-6 text-light fa-solid fa-arrow-pointer"></i>
@@ -303,5 +310,16 @@ export default {
     background: #999999;
     height: 89.75vh;
     overflow: auto;
+}
+.titleName
+{
+    font-size: 35px;
+    font-family: 'Yeseva One';
+    font-style: normal;
+    font-weight: 400;
+}
+a{
+    text-decoration: none;
+    color: #FFFFFF;
 }
 </style>
