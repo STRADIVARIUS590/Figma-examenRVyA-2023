@@ -16,6 +16,28 @@ export default function useInterface() {
         }
     }
 
+    const figureCoords = (figure) => {
+        var x,y,x2,y2;
+
+        switch(figure.type){
+            case 'rect': case 'line': case'text':
+                x = Math.min(figure.x, figure.x + figure.w)
+                y = Math.min(figure.y, figure.y + figure.h)
+                x2 = Math.abs(figure.w)
+                y2 = Math.abs(figure.h)
+                break;
+            case 'ellipse':
+                x = figure.x - Math.abs(figure.w/2)
+                y = figure.y - Math.abs(figure.h/2)
+                x2 = Math.abs(figure.w)
+                y2 = Math.abs(figure.h)
+                break;
+        }
+
+        return {
+            x,y,x2,y2
+        }
+    }
     const lastIndex = ref(0);
 
     const mouse = reactive({
@@ -25,7 +47,7 @@ export default function useInterface() {
         rely: 0,
         type: 'none',
         selection_index: -1,
-        action: 'move',
+        action: 'none',
     })
 
     const project = ref({
@@ -37,7 +59,7 @@ export default function useInterface() {
         Object.assign(mouse, 
             {        
                 type: 'none',
-                action: 'move',
+                action: 'none',
             }
         );
     }
@@ -52,7 +74,24 @@ export default function useInterface() {
         );
     }
 
-    const selectFigure = (index) => {
+    const clickFigure = () => {
+
+        var selected_figure = -1
+
+        project.value.figures.forEach((figure) => {
+
+            let coords = figureCoords(figure);
+
+            if((mouse.x <= coords.x + coords.x2) && (mouse.x >= coords.x) && 
+                (mouse.y <= coords.y + coords.y2) && (mouse.y >= coords.y) && selected_figure < 0){
+                selected_figure = figure.index;
+            }
+        })
+
+        selectFigure(selected_figure, mouse.action);
+    }
+
+    const selectFigure = (index, action = "none") => {
 
         var selected_figure = project.value.figures.find((figure) => figure.index == index)
 
@@ -60,11 +99,17 @@ export default function useInterface() {
             {
                 type: "none",
                 selection_index: index,
-                action: "move",
-                relx: mouse.x - selected_figure.x,
-                rely: mouse.y - selected_figure.y,
+                action: action,
             }
         );
+        if(selected_figure){
+            Object.assign(mouse, 
+                {       
+                    relx: mouse.x - selected_figure.x,
+                    rely: mouse.y - selected_figure.y,
+                }
+            );
+        }
     }
 
     const addElement = (id) => {
@@ -82,7 +127,7 @@ export default function useInterface() {
             h: 50,
             w: 60,
             name: mouse.type + "(" + project.value.figures.length + ")",
-            color: "#000000",
+            color: "#FFFFFF",
             opacity: 100,
             border_size: 2,
             border_color: "#000000",
@@ -95,8 +140,13 @@ export default function useInterface() {
             draw_id: id,
         });
 
-        cleanMouseQueue();
-        selectFigure(lastIndex.value);
+        Object.assign(mouse, 
+            {
+                type: "none",
+                selection_index: lastIndex.value,
+                action: "resize",
+            }
+        );
     }
 
     const deleteElement = (index) =>{
@@ -106,7 +156,7 @@ export default function useInterface() {
             Object.assign(mouse, 
                 {        
                     type: 'none',
-                    action: 'move',
+                    action: 'none',
                     selection_index: -1,
                 }
             );
@@ -116,34 +166,14 @@ export default function useInterface() {
     const drawFigure = (figure, p) =>{
         if(figure.visible && !figure.deleted){
 
-            if(figure.index == mouse.selection_index){
-                p.stroke(0, 0, 200, 1000)
-                p.strokeWeight(1);
-                p.fill(0,0,0, 0);
+            if(mouse.selection_index == figure.index && mouse.action == "resize"){
+                figure.w = mouse.x - figure.x
+                figure.h = mouse.y - figure.y
+            }
 
-                var x,y,x2,y2;
-
-                switch(figure.type){
-                    case 'rect': case 'line':
-                        x = figure.x - 5
-                        y = figure.y - 5
-                        x2 = figure.w + 10
-                        y2 = figure.h + 10
-                        break;
-                    case 'ellipse':
-                        x = figure.x - figure.w/2 - 5
-                        y = figure.y - figure.h/2 - 5
-                        x2 = figure.w + 10
-                        y2 = figure.h + 10
-                        break;
-                    case 'text':
-                        x = figure.x - 5
-                        y = figure.y - figure.font_size
-                        x2 = figure.w + 10
-                        y2 = figure.h - (figure.font_size/2)
-                        break;
-                }
-                p.rect(x,y,x2,y2);
+            if(mouse.selection_index == figure.index && mouse.action == "move"){
+                figure.x = mouse.x - mouse.relx;
+                figure.y = mouse.y - mouse.rely;
             }
 
             //Borde
@@ -169,6 +199,16 @@ export default function useInterface() {
                     p.text(figure.text,figure.x,figure.y)
                     break;
             }
+
+            if(figure.index == mouse.selection_index){
+                p.stroke(0, 0, 200, 255)
+                p.strokeWeight(1);
+                p.fill(0,0,0, 0);
+
+                let coords = figureCoords(figure)
+                p.rect(coords.x - 5, coords.y - 5, coords.x2 + 10, coords.y2 + 10);
+            }
+
         }
     }
 
@@ -194,6 +234,8 @@ export default function useInterface() {
         drawFigure,
         selectFigure,
         moveLayer,
+        clickFigure,
+        figureCoords,
         lastIndex
     }
 }

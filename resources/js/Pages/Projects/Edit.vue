@@ -3,32 +3,36 @@
         <div class="row">
             <div class="col-3">
                 <div class="d-flex">
-                    <h1 class="mt-2 me-3 col font titleName">
+                    <h1 class="mt-2 me-2 font titleName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Inicio">
                         <a :href="route('projects')">
                             <b>
-                                SUGMA
+                                SG
                             </b>
                         </a>
                     </h1>
                     <button @click="selectAction('none', 'move')"
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Mover">
-                        <i class="display-6 text-light fa-solid fa-arrow-pointer"></i>
+                        <i class="toolbar-icon text-light fa-solid fa-arrow-pointer"></i>
+                    </button>
+                    <button @click="selectAction('none', 'resize')"
+                    class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cambiar tamaño">
+                        <i class="toolbar-icon text-light fa-solid fa-down-left-and-up-right-to-center"></i>
                     </button>
                     <button @click="selectAction('rect')"
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Rectángulo">
-                        <i class="display-6 text-light fa-regular fa-square"></i>
+                        <i class="toolbar-icon text-light fa-regular fa-square"></i>
                     </button>
                     <button @click="selectAction('ellipse')"
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elipse">
-                        <i class="display-6 text-light fa-regular fa-circle"></i>
+                        <i class="toolbar-icon text-light fa-regular fa-circle"></i>
                     </button>
                     <button @click="selectAction('line')"
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Línea">
-                        <i class="display-6 text-light fa-solid fa-lines-leaning"></i>
+                        <i class="toolbar-icon text-light fa-solid fa-lines-leaning"></i>
                     </button>
                     <button @click="selectAction('text')"
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Texto">
-                        <i class="display-6 text-light fa-solid fa-font"></i>
+                        <i class="toolbar-icon text-light fa-solid fa-font"></i>
                     </button>
                 </div>
             </div>
@@ -212,6 +216,7 @@ export default {
             selectAction,
             drawFigure,
             selectFigure,
+            clickFigure,
             moveLayer,
         } = useInterface();
 
@@ -219,8 +224,15 @@ export default {
 
         const editName = ref(false);
 
-        const canvasClicked = () => {
-            if(mouse.type != 'none') addElement(project.value.id)
+        const canvasMousePressed = () => {
+            if(mouse.type != 'none') {
+                addElement(project.value.id)
+            }else{
+                clickFigure();
+            }
+        }
+        const canvasMouseReleased = () => {
+            selectFigure(mouse.selection_index)
         }
 
         let workspace = function(p) {
@@ -235,7 +247,8 @@ export default {
                 // posiciona el canvas en el centro de la pagina 
                 canvas.position(mouse.relx, mouse.rely)
                 canvas.parent('sketch-holder');
-                canvas.mouseClicked(canvasClicked)
+                canvas.mousePressed(canvasMousePressed)
+                canvas.mouseReleased(canvasMouseReleased)
             }
 
             p.draw = function() {
@@ -317,6 +330,10 @@ export default {
     font-family: 'Yeseva One';
     font-style: normal;
     font-weight: 400;
+}
+.toolbar-icon
+{
+    font-size: 30px;
 }
 a{
     text-decoration: none;
