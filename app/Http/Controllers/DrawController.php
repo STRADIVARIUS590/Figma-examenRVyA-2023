@@ -95,6 +95,7 @@ class DrawController extends Controller
 
         //actualizar o crear las figuras
         if($request->has('figures')){
+            $layer = 0;
             foreach($request->figures as $request_figure){
                 if(isset($request_figure['id'])){
                     $figure = Figure::findOrFail($request_figure['id']);
@@ -111,11 +112,19 @@ class DrawController extends Controller
                     $figure->draw_id = $draw->id;
                     $figure->save();
                 }
+                //asignar capa
+                $figure->layer = $layer;
+                $figure->save();
+                $layer++;
             }
         }
 
         //mandar draw con figuras actualizadas
-        $draw = Draw::with('figures', 'user')->findOrFail($draw->id);
+        $draw = Draw::where('id', $request->id)->with('user')->first();
+
+        $sorted_figures = Figure::where('draw_id', $request->id)->orderBy('layer')->get();
+
+        $draw->figures = $sorted_figures;
 
         return $this->jsonResponse("Registro actualizado correctamente", $draw, Response::HTTP_OK, null);
     }
