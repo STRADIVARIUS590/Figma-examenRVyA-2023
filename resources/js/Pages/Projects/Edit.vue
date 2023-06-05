@@ -1,8 +1,7 @@
 <template>
     <div class="px-4 py-2 w-100 headerBar text-light">
         <div class="row">
-            <div class="col-3">
-                <div class="d-flex">
+            <div class="col-4 d-flex flex-wrap">
                     <h1 class="mt-2 me-2 font titleName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Inicio">
                         <a :href="route('projects')">
                             <b>
@@ -34,9 +33,8 @@
                     class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Texto">
                         <i class="toolbar-icon text-light fa-solid fa-font"></i>
                     </button>
-                </div>
             </div>
-            <div class="mt-2 col-6 text-center">
+            <div class="mt-2 col-4 text-center px-5">
                 <input 
                     v-if="editName"
                     type="text" 
@@ -51,7 +49,7 @@
                     {{ project.name }}
                 </h3>
             </div>
-            <div class="col-3 d-flex justify-content-end">
+            <div class="col-4 d-flex flex-wrap justify-content-end">
                 <button class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Guardar"
                     @click="save()">
                     <i class="display-6 text-light fa-solid fa-floppy-disk"></i>
