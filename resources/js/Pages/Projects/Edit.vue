@@ -236,11 +236,14 @@ export default {
         let workspace = function(p) {
 
             p.setup = function() {
-                let canvas =  p.createCanvas(p.windowWidth / 2 , p.windowHeight / 5 * 4);
+
+                let width = p.windowWidth / 18 * 11;
+                let height = p.windowHeight / 5 * 4;
+                let canvas =  p.createCanvas(width, height);
                 
                 //  posicion de 0,0 del canvas respecto a toda la pantalla
-                mouse.relx = p.windowWidth / 2 - (p.windowWidth / 4)
-                mouse.rely = p.windowHeight / 2 - (p.windowHeight / 3)
+                mouse.relx = p.windowWidth / 2 - (width / 2) - 10
+                mouse.rely = p.windowHeight / 2 - (height / 2) + 35
 
                 // posiciona el canvas en el centro de la pagina 
                 canvas.position(mouse.relx, mouse.rely)
