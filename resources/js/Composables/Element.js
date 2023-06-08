@@ -20,7 +20,7 @@ export default function useInterface() {
         var x,y,x2,y2;
 
         switch(figure.type){
-            case 'rect': case 'line': case'text':
+            case 'rect': case 'line':
                 x = Math.min(figure.x, figure.x + figure.w)
                 y = Math.min(figure.y, figure.y + figure.h)
                 x2 = Math.abs(figure.w)
@@ -31,6 +31,16 @@ export default function useInterface() {
                 y = figure.y - Math.abs(figure.h/2)
                 x2 = Math.abs(figure.w)
                 y2 = Math.abs(figure.h)
+                break;
+            case 'text':
+                x = figure.x
+                y = figure.y - figure.font_size
+
+                let xLength = Math.max(...figure.text?.split('\n')?.map(line => {return line.length}))
+                let yLength = figure.text?.split('\n')?.length
+
+                x2 = xLength * (figure.font_size/2)
+                y2 = yLength * (figure.font_size + figure.font_size / 5)
                 break;
         }
 
@@ -163,18 +173,25 @@ export default function useInterface() {
         }
     }
 
+    const modifyFigure = () => {
+
+        console.log('a')
+        let indexFigure = project.value.figures.findIndex(figure => figure.index === mouse.selection_index)  
+
+        if(indexFigure >= 0){
+            if(mouse.action == "resize"){
+                project.value.figures[indexFigure].w = mouse.x - project.value.figures[indexFigure].x
+                project.value.figures[indexFigure].h = mouse.y - project.value.figures[indexFigure].y
+            }
+            if(mouse.action == "move"){
+                project.value.figures[indexFigure].x = mouse.x - mouse.relx;
+                project.value.figures[indexFigure].y = mouse.y - mouse.rely;
+            }
+        }
+    }
+
     const drawFigure = (figure, p) =>{
         if(figure.visible && !figure.deleted){
-
-            if(mouse.selection_index == figure.index && mouse.action == "resize"){
-                figure.w = mouse.x - figure.x
-                figure.h = mouse.y - figure.y
-            }
-
-            if(mouse.selection_index == figure.index && mouse.action == "move"){
-                figure.x = mouse.x - mouse.relx;
-                figure.y = mouse.y - mouse.rely;
-            }
 
             //Borde
             var border_color = hexToRgb(figure.border_color);
@@ -235,6 +252,7 @@ export default function useInterface() {
         selectFigure,
         moveLayer,
         clickFigure,
+        modifyFigure,
         figureCoords,
         lastIndex
     }

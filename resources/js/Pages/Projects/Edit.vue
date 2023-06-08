@@ -70,7 +70,7 @@
                 <template v-if="!figure.deleted">
                     <div class="col">
                         <div role="button" :class="'ps-2 py-2 me-2 ' + (mouse.selection_index == figure.index ? 'text-light' : '')"
-                        @click="selectFigure(figure.index)">
+                        @click="selectFigure(figure.index, mouse.action)">
                             <h6>{{ figure.name }}</h6>
                         </div>
                     </div>
@@ -133,17 +133,19 @@
                         onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                     </div>
 
-                    <label class="mb-2 col-2 py-1"><b>w:</b></label>
-                    <div class="mb-2 col-10">
-                        <input type="number" class="form-control" v-model="selected_figure.w" step="1"
-                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                    </div>
+                    <template v-if="selected_figure.type!='text'">
+                        <label class="mb-2 col-2 py-1"><b>w:</b></label>
+                        <div class="mb-2 col-10">
+                            <input type="number" class="form-control" v-model="selected_figure.w" step="1"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                        </div>
 
-                    <label class="mb-2 col-2 py-1"><b>h:</b></label>
-                    <div class="mb-2 col-10">
-                        <input type="number" class="form-control" v-model="selected_figure.h" step="1"
-                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-                    </div>
+                        <label class="mb-2 col-2 py-1"><b>h:</b></label>
+                        <div class="mb-2 col-10">
+                            <input type="number" class="form-control" v-model="selected_figure.h" step="1"
+                            onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                        </div>
+                    </template>
 
                     <div class="mt-1 mb-2 col-12" v-if="selected_figure.type=='rect'">
                         <label><b>Radio de esquinas</b></label>
@@ -215,12 +217,14 @@ export default {
             drawFigure,
             selectFigure,
             clickFigure,
+            modifyFigure,
             moveLayer,
         } = useInterface();
 
         project.value = props.project;
 
         const editName = ref(false);
+        const isMousePressed = ref(false);
 
         const canvasMousePressed = () => {
             if(mouse.type != 'none') {
@@ -230,7 +234,10 @@ export default {
             }
         }
         const canvasMouseReleased = () => {
-            selectFigure(mouse.selection_index)
+            selectFigure(mouse.selection_index, mouse.action)
+        }
+        const canvasMouseMoved = () => {
+            if(isMousePressed.value) modifyFigure()
         }
 
         let workspace = function(p) {
@@ -250,12 +257,15 @@ export default {
                 canvas.parent('sketch-holder');
                 canvas.mousePressed(canvasMousePressed)
                 canvas.mouseReleased(canvasMouseReleased)
+                canvas.mouseMoved(canvasMouseMoved)
             }
 
             p.draw = function() {
 
                 mouse.x = p.mouseX;
                 mouse.y = p.mouseY;
+                
+                isMousePressed.value = p.mouseIsPressed
                 
                 p.background('#888888')
 
@@ -309,6 +319,7 @@ export default {
             selectFigure,
             selected_figure,
             editName,
+            isMousePressed,
             save,
             finishEdit,
         }
