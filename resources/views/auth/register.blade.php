@@ -36,9 +36,18 @@
                         <form class="needs-validation" method="POST" action="{{ route('users.register') }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="username" class="form-label">Nombre de usuario<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="username" required="" placeholder="Ingrese un nombre de usuario">
-                                @error('username')
+                                <label for="name" class="form-label">Nombre<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="name" required="" placeholder="Ingrese su nombre">
+                                @error('name')
+                                    <span class="text-danger" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastname" class="form-label">Apellido<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="lastname" required="" placeholder="Ingrese su apellido">
+                                @error('lastname')
                                     <span class="text-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
